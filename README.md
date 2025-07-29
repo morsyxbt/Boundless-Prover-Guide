@@ -364,7 +364,7 @@ boundless proving benchmark --request-ids {Order_ID}
 
 ```
 cd boundless
-sudo wget https://raw.githubusercontent.com/Mayankgg01/Boundless-Prover-Guide/refs/heads/main/broker.toml -O broker.toml
+sudo wget https://raw.githubusercontent.com/morsyxbt/boundless-env/main/broker.toml -O broker.toml
 ```
 
 2. Open `Broker.toml` 
