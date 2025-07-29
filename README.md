@@ -36,6 +36,11 @@ The Boundless Prover Node is a computational proving system that participates in
 * Supported: Ubuntu 20.04/22.04
 * Not supports : Ubuntu 24.04
 
+### Funds
+* Have minimum: 2-5 ETH on Base
+* Have minimum: $5 USDC on Base
+   * note: use burner wallet
+
 ---
 
 #### Base Mainnet RPC From : [BlockPI](https://account.getblock.io/sign-up) , [Alchemy](https://www.alchemy.com/) 
@@ -84,7 +89,7 @@ docker --version && docker-compose --version
 
 
 
-## Install Required Dependecies : For All From Here
+## Install Required Dependecies : For All From Here - **let docker run in background**
 
 
 ```
@@ -200,93 +205,100 @@ source .env
 
 * >To apply changes You will need to run this command every time you start the prover 
 
+## Configuring Your Prover & Broker
 
-## Configuring Prover & Broker
-
-#### Single GPU Only:
-
-* Here You will config `mem_limit:` & `cpus`  in the `compose.yml` file according to Your Resources (GPU, Ram & CPU)
+#### For single GPU Only :
 
 ```
 sudo nano compose.yml
 ```
 
-1. Now GO to `x-exec-agent-common: &exec-agent-common` section and change:
+**IMP Chnages Needed**
 
-1.1. `mem_limit:`        How much Ram u want to allocate, dont allocate max:
+* Scroll down to : `x-exec-agent-common: &exec-agent-common` section
 
-1.2. `cpus:`            Numbers of Core u want to allocation, u can allocate max if ur core are not doing big stuff: [check core](https://github.com/Mayankgg01/Boundless-Prover-Guide?tab=readme-ov-file#check-number-of-cpu-cores-and-threads)
+  >* `mem_limit:` : write how much ram you can allocate - tip allocate half of what your pc has
 
+  >* `cpus:` : write number of CPU cores you can allocate - tip allocate 50-70% of what you have
 
-2. Now scroll down and Go to `gpu_prove_agent0:` & change `mem_limit:` & `cpus:`  Here too: (See ScreenShot)
+* Scroll down to : `gpu_prove_agent0:`
+  
+  * change `mem_limit:` & `cpus:`  same as above
 
-<img width="2892" height="820" alt="image" src="https://github.com/user-attachments/assets/ba890547-a294-405d-8638-4271151aa2c8" />
+### configure Segment Size
 
+* change Segment Size in `x-exec-agent-common: &exec-agent-common` according to your `VRAM` - check below table :
 
+    **VRAM  :  Segment Size MAx
 
-### 3. Configure Segment Size 
+      8GB   :  19
+  
+      16GB  :  20
 
->Here we will change the Segment Size into the `x-exec-agent-common: &exec-agent-common` ...Check the below given Screenshot and edit the `Segment Size` according to your `VRAM` 
+      20GB  :  21
 
-<img width="1132" height="336" alt="image" src="https://github.com/user-attachments/assets/8a25242c-8ae1-499a-a945-60fe2b94b3dd" />
+      40GB  :  22
+  
+  * ctrl + o > Y > enter
 
-* Now we will add Segment Size in the `.env.broker` 
+---
 
-* Firstly we will copy `.env.broker-template` into `.env.broker`
+### Now Add Segment Size in the `.env.broker` 
+
+* First copy `.env.broker-template` into `.env.broker`
 
 ```
 sudo cp .env.broker-template .env.broker
 ```
 
-* Open it and set `Segment Size` According to your `VRAM` : As same as above step:
+* Open and set `Segment Size` same as above step :
 
 ```
 sudo nano .env.broker
 ```
 
-* ####  Inject it into broker make changes:
+* ####  Inject into broker make changes:
 
 ```
 source .env.broker
 ```
 
->You Have to inject everytime when you are going to run prover/broker
+>note everytime you run prover/broker you will need to inject
 
 ---
 
 
-## Deposit & Stake Into Marketplace:
+### Stake In Marketplace:
 
->here we will deposit some base mainnet `$USDC` into Boundless marketplcae for staking purpose: and for locking orders. No minimum but you can do around 5$:
+>deposit some `$USDC` on Base main net in Boundless marketplcae for staking and for locking orders - tip do around $5
 
-1. Inject `.env` first:
+* Inject `.env` first:
 
 ```
 source .env
 ```
 
-2. Add boundless CLI into Path
+* Add boundless CLI into Path
 
 ```
 source ~/.bashrc
 ```
 
-3. Deposit Usdc
+* Deposit Usdc
 
 ```
 boundless account deposit-stake STAKE_AMOUNT
 ```
 
-4. Verify Stake
+* Verify Stake
 
 ```
 boundless account stake-balance
 ```
 
-
 ---
 
-## Run Bento & Benchmarking Bento
+### Run Bento and Benchmarking Bento
 
  >Bento: `Bento is the local proving infrastructure. Bento will take requests, prove them and return the result.`
 
