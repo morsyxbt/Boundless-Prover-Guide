@@ -38,15 +38,15 @@ The Boundless Prover Node is a computational proving system that participates in
 
 ---
 
-### Base Mainnet RPC From : [BlockPI](https://account.getblock.io/sign-up) , [Alchemy](https://www.alchemy.com/) 
+#### Base Mainnet RPC From : [BlockPI](https://account.getblock.io/sign-up) , [Alchemy](https://www.alchemy.com/) 
 
 ---
 
-### Docker Desktop & Docker compose
+#### Docker Desktop & Docker compose
 
 * For Local Pc Users: [DockerDesktop](https://www.docker.com/)
   
-* ### Install Docker & Docker Compose : Skip If You Don't have Cloud GPU
+* #### Install Docker & Docker Compose : Skip If You Don't have Cloud GPU
 
 ```
 sudo apt update && sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
@@ -84,7 +84,7 @@ docker --version && docker-compose --version
 
 
 
-## Install All Require Dependecies
+## Install Required Dependecies : For All From Here
 
 
 ```
@@ -108,18 +108,18 @@ cd boundless && git checkout v0.13.0 && git submodule update --init
 
 ### Now We will install few more dependecies & CLI Tools
 
- * Essential boundless packages
+* Essential boundless packages
 
- * GPU drivers for provers
+* GPU drivers for provers
 
- * Docker with NVIDIA support
+* Docker with NVIDIA support
 
- * Rust programming language
+* Rust programming language
 
 * Installs CUDA Toolkit.
 
 
-For a quick set up of Boundless dependencies on Ubuntu 22.04 LTS please run:
+For a quick set up of Boundless dependencies run :
 
 ```
 sudo ./scripts/setup.sh
@@ -127,7 +127,7 @@ sudo ./scripts/setup.sh
 
  ---
 
-### Install few Manually:
+### Install
 
 #### Rustup
 
@@ -173,7 +173,7 @@ rzup --version
 rzup install rust
 ```
 
-#### cargo-risczero
+#### cargo risczero
 
 ```
 cargo install cargo-risczero
@@ -184,7 +184,7 @@ rzup install cargo-risczero
 ```
 
 
-#### Update rustup:
+#### update rustup:
 
 ```
 rustup update
@@ -219,7 +219,7 @@ export PATH=$PATH:/root/.cargo/bin
 source ~/.bashrc
 ```
 
-#### Check version
+#### check version
 
 ```
 bento_cli --version 
@@ -227,7 +227,7 @@ boundless -h
 ```
 
 
-#### Just
+#### just
 
 ```
 cargo install just
@@ -241,14 +241,14 @@ cd boundless
 ```
 
 ```
-sudo curl -o $HOME/boundless/.env https://raw.githubusercontent.com/Mayankgg01/Boundless-Prover-Guide/refs/heads/main/.env
+sudo curl -o $HOME/boundless/.env https://raw.githubusercontent.com/morsyxbt/boundless-env/main/.env
 ```
 
 ```
 sudo nano $HOME/boundless/.env
 ```
 
->Replace `Your_ENV_Wallet_PVT_Key_Without_0x` with your actual Wallet Pvt key: without 0x
+Replace `Your_ENV_Wallet_PVT_Key_Without_0x` with your actual Wallet Pvt key: without 0x
 
 >Replace `Your_RPC_URL` with your actual Base Mainnet RPC Endpoint, within " "
 
