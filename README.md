@@ -178,7 +178,7 @@ cargo install just
 just --version
 ```
 
-## Setup Environment Variables - Wallet & API
+## setup Environment Variables - Wallet & API
 
 ```
 cd boundless
@@ -205,7 +205,7 @@ source .env
 
 * >To apply changes You will need to run this command every time you start the prover 
 
-## Configuring Your Prover & Broker
+## configuring Your Prover & Broker
 
 #### For single GPU Only :
 
@@ -229,7 +229,7 @@ sudo nano compose.yml
 
 * change Segment Size in `x-exec-agent-common: &exec-agent-common` according to your `VRAM` - check below table :
 
-    **VRAM  :  Segment Size MAx
+    **VRAM  :  Segment Size MAX**
 
       8GB   :  19
   
