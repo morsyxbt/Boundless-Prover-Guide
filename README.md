@@ -620,7 +620,7 @@ sudo just broker
 
 >shoutout to all those people that had put in the work even before me - they were a huge help
 >with some time i will be adding more accurate configurations don't worry
->boundless is tryly one of the tough nodes out there - you are competing against devs who have maybe 5-10x of resources
+>boundless is truly one of the tough nodes out there - you are competing against devs who have maybe 5-10x of resources
 >so be glad if you will be able to lock orders against them
 >you will learn a lot in this journey
 >peace out
