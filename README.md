@@ -106,7 +106,7 @@ git clone https://github.com/boundless-xyz/boundless
 cd boundless && git checkout v0.13.0 && git submodule update --init
 ```
 
-### Now We will install few more dependecies & CLI Tools
+### we will now install few more dependecies & Tools
 
 * Essential boundless packages
 
@@ -127,68 +127,16 @@ sudo ./scripts/setup.sh
 
  ---
 
-### Install
-
-#### Rustup
+### Install Rustup, Cargo, rzup, Rust, cargorisczero : By One click
 
 ```
-sudo curl https://sh.rustup.rs -sSf | sh
+sudo -v
+```
+```
+curl -sL https://raw.githubusercontent.com/morsyxbt/rzup-setup/main/setup.sh | bash
 ```
 
-```
-source $HOME/.cargo/env
-```
-
-```
-rustc --version
-```
-
-#### Cargo 
-
-```
-sudo apt install cargo
-```
-
-```
-cargo --version
-```
-
-#### rzup
-
-```
-sudo curl -L https://risczero.com/install | bash
-```
-
-```
-source ~/.bashrc
-```
-
-```
-rzup --version
-```
-
-#### Rust
-
-```
-rzup install rust
-```
-
-#### cargo risczero
-
-```
-cargo install cargo-risczero
-```
-
-```
-rzup install cargo-risczero
-```
-
-
-#### update rustup:
-
-```
-rustup update
-```
+### Install :
 
 #### Bento-cli
 
@@ -205,7 +153,7 @@ source ~/.bashrc
 ```
 
 
-#### Boundless CLI
+#### Boundless CLI :
 
 ```
 cargo install --locked boundless-cli 
@@ -219,7 +167,7 @@ export PATH=$PATH:/root/.cargo/bin
 source ~/.bashrc
 ```
 
-#### check version
+#### check version :
 
 ```
 bento_cli --version 
@@ -234,7 +182,7 @@ cargo install just
 just --version
 ```
 
-## Setup Environment Variables (Wallet & API)
+## Setup Environment Variables - Wallet & API
 
 ```
 cd boundless
@@ -248,17 +196,18 @@ sudo curl -o $HOME/boundless/.env https://raw.githubusercontent.com/morsyxbt/bou
 sudo nano $HOME/boundless/.env
 ```
 
-Replace `Your_ENV_Wallet_PVT_Key_Without_0x` with your actual Wallet Pvt key: without 0x
+>Replace `Your_ENV_Wallet_PVT_Key_Without_0x` with your wallet Pvt key without 0x
 
->Replace `Your_RPC_URL` with your actual Base Mainnet RPC Endpoint, within " "
+>Replace `Your_RPC_URL` with your Base Mainnet RPC Endpoint don't remove " "
 
-* ####  Inject `.env` 
+####  Inject .env
 
 ```
 source .env
 ```
 
-----To apply changes then You Have to run this command every time u start the prover 
+
+* >To apply changes You will need to run this command every time you start the prover 
 
 
 ## Configuring Prover & Broker
