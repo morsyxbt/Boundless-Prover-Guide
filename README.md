@@ -37,11 +37,51 @@ The Boundless Prover Node is a computational proving system that participates in
 * Not supports : Ubuntu 24.04
 
 ---
-Docker Desktop & Docker compose : Install from here Local Pc Users: [DockerDesktop](https://www.docker.com/)
-
-If u have Cloud GPU then follow: [Install Docker & Docker Compose](https://github.com/Mayankgg01/Aztec_Sequencer_Guide?tab=readme-ov-file#install-docker--docker-compose)
 
 ### Base Mainnet RPC From : [BlockPI](https://account.getblock.io/sign-up) , [Alchemy](https://www.alchemy.com/) 
+
+---
+
+### Docker Desktop & Docker compose
+
+* For Local Pc Users: [DockerDesktop](https://www.docker.com/)
+  
+* ### Install Docker & Docker Compose : Skip If You Don't have Cloud GPU
+
+```
+sudo apt update && sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+```
+
+```
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+```
+
+```
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+```
+sudo apt update && sudo apt install -y docker-ce && sudo systemctl enable --now docker
+```
+
+```
+sudo usermod -aG docker $USER && newgrp docker
+```
+
+
+```
+sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | jq -r .tag_name)/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose
+```
+
+
+*  Verify installation
+
+```
+docker --version && docker-compose --version
+```
+
+
+
 
 
 ## Install All Require Dependecies
