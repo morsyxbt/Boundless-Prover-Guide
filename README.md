@@ -97,7 +97,7 @@ sudo apt install curl iptables build-essential git wget lz4 jq make gcc postgres
 
 ---
 
-## Clone Boundless Repo:
+## clone Boundless Repo :
 
 ```
 git clone https://github.com/boundless-xyz/boundless
@@ -106,20 +106,11 @@ git clone https://github.com/boundless-xyz/boundless
 cd boundless && git checkout v0.13.0 && git submodule update --init
 ```
 
-### we will now install few more dependecies & Tools
-
-* Essential boundless packages
-
-* GPU drivers for provers
-
-* Docker with NVIDIA support
-
-* Rust programming language
-
-* Installs CUDA Toolkit.
+### install few more dependecies & Tools
+>Boundless packages, GPU drivers for provers, Docker with NVIDIA support, Rust, CUDA Toolkit
 
 
-For a quick set up of Boundless dependencies run :
+#### setup Boundless dependencies :
 
 ```
 sudo ./scripts/setup.sh
