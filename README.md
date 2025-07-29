@@ -3,7 +3,7 @@ The Boundless Prover Node is a computational proving system that participates in
 
 ---
 
-## First under how provers work - to know what you are doing : don't skip any line
+## First understand how provers work - to know what you are doing : don't skip any line
 
 - Requester posts ZKP request on Boundless (say 10M cycle proof in $5-$10 and 30 min is deadline)
 - All provers (say Prover 1-5) see request simultaneously
