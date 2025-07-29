@@ -37,7 +37,7 @@ The Boundless Prover Node is a computational proving system that participates in
 * Not supports : Ubuntu 24.04
 
 ### Funds
-* Have minimum: 2-5 ETH on Base
+* Have minimum: $2-5 ETH on Base
 * Have minimum: $5 USDC on Base
    * note: use burner wallet
 
