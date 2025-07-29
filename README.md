@@ -289,6 +289,8 @@ source ~/.bashrc
 ```
 boundless account deposit-stake STAKE_AMOUNT
 ```
+>remove STAKE_AMOUNT from above command and enter how much USDC you want to stake
+>note: just write : 2 , 3 or 5 don't put any $ sign
 
 * Verify Stake
 
@@ -300,74 +302,65 @@ boundless account stake-balance
 
 ### Run Bento and Benchmarking Bento
 
- >Bento: `Bento is the local proving infrastructure. Bento will take requests, prove them and return the result.`
-
-
-1. Here we will run bento & benchmark our GPUs: 
-
 ```
 sudo just bento
 ```
 
-* Make Sure your docker is running in Backgroud:
+* Your Docker should be running in background
+* may take upto 10 minutes
 
-2. Check the logs
+* check logs
 
 ```
 just bento logs
 ```
 
 
-### Benchmarking Bento
+### Benchmark Bento
 
->here we will Benchmark our bento to get to know about our `peak_prove_khz` , which we will use in the broker configuration:
+>Benchmark our bento to know about `peak_prove_khz` , which we will use in the broker configuration:
+> This corresponds to the maximum number of cycles per second (in kHz) that your proving backend can operate
 
-What is `peak_prove_khz` ? --This should correspond to the maximum number of cycles per second (in kHz) your proving backend can operate -
-
-* Inject `.env` first:
+* Inject .env first:
 
 ```
 source .env
 ```
 
 * Benchmark
+* 
+* visit : [Order_Id](https://explorer.beboundless.xyz/orders)
+* Grab a fullfilled order id - but conditions :
+ >order id should have : 10M-50M cycles
+ >order id should be : atleast 30minutes-1.5hours old
+ >if there's none availabe then you can grab : 100M cycles - check ss
 
+![WhatsApp Image 2025-07-29 at 18 57 08_539d0929](https://github.com/user-attachments/assets/55e550d6-aefe-4378-954d-fc757f7f1bb8)
+
+### Now run :
 ```
 boundless proving benchmark --request-ids {Order_ID}
 ```
+>Replace `{Order_ID)` from the actual previous order id you got above
 
-* Replace `{Order_ID)` from the actual previous order id from official Dashboard: [Get_Order_Id](https://explorer.beboundless.xyz/orders)
+* You will see `peak_prove_khz = xxx` , the prover is estimated to handle ~xxx,xxx cycles per second (~xxx khz)
+  >write the number `xxx` or whatever you get somewhere
+  >repeat this benchmark test atleast 3 times with different order id's to get the average number
+  
+* >`peak_prove_khz` will look like this :
+  ![WhatsApp Image 2025-07-29 at 19 05 02_a6920711](https://github.com/user-attachments/assets/73af6f1c-180a-4499-824a-7292eaeaffff)
 
->You have to use the `Fulfilled` and `Validated` order IDs: (check below Screenshot)
-
-<img width="2184" height="301" alt="image_2025-07-19_18-40-01" src="https://github.com/user-attachments/assets/ce2a7dd9-416d-4a39-b8f5-69385476c130" />
-
-
-
-* Look at the below image, U can see `peak_prove_khz = 333` , the prover is estimated to handle ~333,000 cycles per second (~333 khz).
-
-* We will use this in upcoming broker config file: 
-
-* U can test many times to get the accurate of it:
-
-<img width="2559" height="454" alt="Screenshot 2025-07-19 184051" src="https://github.com/user-attachments/assets/df3e91fa-e62d-4d9b-a792-8a7f2b781167" />
-
-
-* You have to wait until it done: It can take time: Depends on your choosen `Cycles` in the Order: 
+**This was a test to get our average peak prove khz which we will use in Broker Configuration**
 
 ---
 
+## Now Broker Configuration :
 
+* Download my updated `Broker.toml` file : But configure it manually according to your specs and resources
+  >all the configurations from here will decide whether you can lock orders and be competitive or not
+  >so read every detail properly from here - i have added tips accordingly, you can use them or modify them if you want
 
-## Broker Configuration
-
->The Broker is a service that runs within the Bento proving stack. Responsible for market interactions including bidding on jobs, locking them, issuing job requests to the Bento proving cluster, and submitting proof fulfillments onchain
-
-
-* Here You will download my updated `Broker.toml` file: But you all need to configure it manually according to your specs and resources: And u have to play with these configuration to make your broker `Competitive`:
-
-
-1. Install `Broker.toml`
+* First Install `Broker.toml`
 
 ```
 cd boundless
@@ -380,118 +373,87 @@ sudo wget https://raw.githubusercontent.com/Mayankgg01/Boundless-Prover-Guide/re
 sudo nano broker.toml
 ```
 
->Now we will make Changes in it according to our system and resources: 
+>Now make changes according to your specs and resources :
 
->❗Mention all the necessary configs which u have to change: Read all them very politely and change your config according to them:
+### 1. mcycle_price :
+   
+* defines the price you're bidding per million cycles (mcycle) when proving. This value helps determine the minimum price you're willing to accept for a job
 
+* Tip : Lowering this value allows your broker to bid more competitively
+* You can set it to something like "0.000000000000001" or even lower
 
-### 1. `mcycle_price`:
+### 2. mcycle_price_stake_token :
 
-* What it means:
+* specifies the token (e.g., usdc) used to calculate pricing for orders paid in staking tokens
 
-   This sets how much you're charging per million cycles (mcycle) when bidding on proving jobs.  This is one of the inputs to decide the minimum price to accept for a request.
+* Tip : Adjust this up or down depending on your strategy
+* Example : You can keep it like: 0.000001
 
-* Tip: Decreasing the `mcycle_price` would help your Broker to bid at lower prices for proofs. So Keep it low
+### 3. priority_requestor_addresses :
 
-* Ex. You can set it like or lower too: "0.000000000000001" 
-
-### 2. `mcycle_price_stake_token`
-
-* What it means:
-     
-     Defines which token you're pricing in (usdc) . This is used to determine the minimum price to accept an order when paid in staking tokens (usdc).
-
-* Tip: You can reduce it or increse according to u: You can keep as well: `0.000001`
-
-### 3. `priority_requestor_addresses`
-
-* What it means:
-
-     Priority requestor addresses that can bypass the mcycle limit and max input size limit. We alraedy set 4 official `priority_requestor_addresses` in our file:
+* A list of requestor addresses that bypass the mcycle and input size limits
+* I have already included four official `priority_requestor_addresses` in this config
 
 
-### 4. `peak_prove_khz`
+### 4. peak_prove_khz :
 
-* What it means:
+* Represents your GPU's maximum proving speed measured in thousands of cycles per second (kHz)
 
-     This is your GPU's maximum proving speed, in thousands of cycles per second.
+* How to set :
+>You alraedy tested it and got your `peak_prove_khz` average above : Benchmarking Bento
 
-* How to set:
+* Now edit your `peak_prove_khz` in `broker.toml` as per the average you got above
+  
+### 5. max_mcycle_limit :
 
->You alraedy test it and got your `peak_prove_khz` here: [Benchmarking Bento](https://github.com/Mayankgg01/Boundless-Prover-Guide?tab=readme-ov-file#benchmarking-bento)
+* Controls the maximum maximum job size (in mcycles) you’ll accept `(1 mcycle= 1 million cycles)` this helps avoid assigning jobs too large for your hardware
 
-* Edit your `peak_prove_khz` in `broker.toml`
+* Tip:
+  * If you're on a single GPU, keep it around `1000–2000`
+  *If you have multiple GPUs, set it higher, like 4000–500
 
-### 5. `max_mcycle_limit` 
+>change this according to your system - prover with limited resources should reduce this number otherwise you won't complete big orders
 
-* What it means:
+### 6. min_deadline :
 
-     This limits the maximum job size (in mcycles) you’ll accept. `(1 mcycle= 1 million cycles)` Avoids jobs that are too heavy for your hardware. Orders with cycles more than the set parameter will be spikked
+* Minimum number of blocks before a job expires, below which the broker won’t attempt to lock the job
 
+* Example : `min_deadline = 300` means your broker will only accept jobs that expire in more than 5 minutes
 
-* Tip: You have to change this according to your System: Prover with limited resources should reduce this number cause u cant complete this big order: So If your system or u have multiple gpu then set high: like 4000-5000
+* Tip : If your setup is fast and reliable, consider lowering this to 200 to grab more jobs
 
-* 1 GPU users can set it like 1000-2000
+### 7. max_concurrent_proofs :
 
-### 6. `min_deadline` 
+* Controls how many jobs your broker can prove simultaneously
+* If the number of running proofs reaches this cap the broker will pause before locking new ones
 
-* What it means:
-
-     This is a minimum number of blocks before the requested job expiration that Broker will attempt to lock a job.
-
->By setting the min deadline, your prover won't accept requests with a deadline less than that.
-
-* How to set:
-
->Example: min_deadline = 300 means only take jobs that expire in >5 minutes.
-
->If your prover is fast and stable, you can reduce to 200 to get more jobs.
-
-### 7. `max_concurrent_proofs`
-
-* What it means:
-
-    How many proving jobs your broker can run at the same time. When the numbers of running proving jobs reaches that limit, the system will pause and wait for them to get finished instead of locking more orders. 
-
-* How to set:
-
->Set this based on your GPU + CPU power.
-
->Dont set it above 2 if you are on single GPU, If you're running multiple GPUs, you can increase this
+* Tip : On single-GPU systems keep this at `2` or less
+* For multi-GPU setups, you can raise it
 
 
-### 8. lockin_priority_gas
+### 8. lockin_priority_gas :
 
-* What it means:
+* Minimum gas fee (in wei) used for priority lock-in transactions. Higher values help you outbid others and get your lock-in confirmed faster
 
-     Minimum gas fee (in wei) to send priority lock-in txs. Increasing it to consume more gas to outrun other bidders
+* Example : `lockin_priority_gas` = 3000000000000 means 3000 Gwei (≈ 0.000003 ETH)
 
-* How to set:
+* Tip : Keep it between 2000–4000 Gwei for better on-chain competition
 
- >Example: `lockin_priority_gas` = 3000000000000 means 3000 Gwei. (0.000003 eth)
-
- >This is important for fast inclusion onchain.
-
- >Keep between 2000-4000 Gwei to stay competitive.
-
-* Web to Calculate it: www.alchemy.com/gwei-calculator
-
-
-### Check-out official Docs for more info regarding Broker Configuration: [Official-docs](https://docs.beboundless.xyz/provers/broker#settings-in-brokertoml)
+* Here's a web to calculate it : [GWEI_Calculator](www.alchemy.com/gwei-calculator)
 
 ---
 
-## Stop the `bento`
+## Stop `bento` :
 
->We will stop the `bento` to run the broker & applying config changes:
+>stop `bento` to run the broker & applying config changes :
 
 ```
 sudo just bento down
 ```
 
-### Install `foundry` before running the broker
+### Install foundry before running the broker :
 
-* >It will prevent you from an Error which will come at building broker:
+>This prevents from an error which comes at building broker
 
 ```
 sudo curl -L https://foundry.paradigm.xyz | bash -s -- --skip-confirm
@@ -513,29 +475,29 @@ forge install Arachnid/solidity-stringutils
 
 ---
 
-## Start The Broker🚀
+## Now start Broker :
 
-1. Inject `.env` 
+* Inject .env 
 
 ```
 source .env
 ```
 
-2. Run Prover
+* Run Prover
 
 ```
 sudo just broker
 ```
 
->Running a broker with `just` will also start the `Bento`  through docker compose.
+>Running a broker with `just` can also start the `Bento`  through docker compose
 
 3. Check logs
 
->If u are doing in Local Pc then check your Docker Desktop that all 11 containers are running: 
+>If Local Pc then check your Docker Desktop that all 11 containers are running
 
->Check the `Broker` containers Logs:
+>Check the `Broker` containers Logs
 
-* If cloud GPU then follow:
+* **If cloud GPU :**
 
 ```
 docker ps
@@ -547,13 +509,116 @@ docker ps
 just broker logs
 ```
 
-<img width="2227" height="1256" alt="image" src="https://github.com/user-attachments/assets/c821373d-aacf-473a-80e3-3dc644a4d7c7" />
-
-
-Here we go🚀......You just have completed the Boundless prover Set-Up: 🥳
-
+* Boom congrats : you completed Boundless Prover setup 
 
 ---
 
+### some important points and solutions of errors :
 
-<div align="center">
+### 3. understand to identify primary/secondary transactions :
+
+
+* >Fullfilled Transaction Primary Prover : `0x8e3b6945`
+  
+* >Lock Order Successfully : `0xb4206dd2`
+
+* >Complete Order As Secondry Prover : `0x2f13a90a`
+
+### everything about primary/secondary provers is discussed in the beginning of guide make sure to read that also :
+>and reminding again : Boundless has mentioned rewards for primary provers - but i did not come across a single post which says Secondary Provers will be rewarded too - they may or may not announce in future
+
+* **Explorer: https://basescan.org/address/**
+
+---
+
+### 2. solution of : error the following required arguments were not provided --rpc-url <RPC_URL>
+
+>This error pops due to env file not etting injected into broker/bento or docker compose file sets to use env in place of env.base
+
+
+ #### Follow the commands :
+ 
+ * Down broker/bento :
+
+```
+sudo just bento down
+```
+
+```
+sudo just broker down
+```
+
+#### move .env.base into .env
+
+```
+mv .env.base .env
+```
+
+
+#### Reload bash
+
+```
+source .env
+```
+
+
+#### start bento/broker
+
+```
+sudo just bento 
+```
+
+```
+sudo just broker 
+```
+
+* This should fix the error
+
+---
+
+### 3. If your local pc shuts down/next day start :
+
+* Move to boundless Directory :
+  
+```
+cd boundless
+```
+
+* start your docker desktop
+
+* Inject .env and .env.broker into broker :
+
+
+```
+source .env.broker
+```
+
+```
+source .env
+```
+
+
+#### Start broker :
+
+```
+sudo just broker
+```
+
+* check your containers and logs
+* done
+
+---
+
+**Made with ❤️ by [Morsyxbt](https://x.com/morsyxbt)**
+
+---
+
+**A note in the end :**
+
+>This took a lot of hardwork analysing docs not only that - i hate to see almost 10+ other guides to see what's happening why aren't people being able to lock primary orders
+>shoutout to all those people that had put in the work even before me - they were a huge help
+>with some time i will be adding more accurate configurations don't worry
+>boundless is tryly one of the tough nodes out there - you are competing against devs who have maybe 5-10x of resources
+>so be glad if you will be able to lock orders against them
+>you will learn a lot in this journey
+>peace out
