@@ -615,7 +615,9 @@ sudo just broker
 
 **A note in the end :**
 
->This took a lot of hardwork analysing docs not only that - i hate to see almost 10+ other guides to see what's happening why aren't people being able to lock primary orders
+>This took a lot of hardwork analysing docs not only that - i had to checek almost 10+ other guides to see what's going wrong why aren't people being able to lock primary orders
+>max guides were not even understandable for non-coding background people
+
 >shoutout to all those people that had put in the work even before me - they were a huge help
 >with some time i will be adding more accurate configurations don't worry
 >boundless is tryly one of the tough nodes out there - you are competing against devs who have maybe 5-10x of resources
